@@ -14,8 +14,11 @@ our $VERSION = '0.01';
 sub run {
     my ($class) = @_;
     my $self = bless {}, $class;
+
     $self->{top} = MainWindow->new;
     $self->create_menu;
+    $self->create_text_widget;
+
     MainLoop;
 }
 
@@ -38,6 +41,15 @@ sub create_menu {
     $self->{top}->configure(-menu => $main_menu);
 }
 
+sub create_text_widget {
+    my ($self) = @_;
+
+    $self->{text} = $self->{top}->Text(
+        -state => 'normal'
+    );
+    $self->{text}->pack;
+}
+
 sub show_open {
     my ($self) = @_;
 
@@ -48,7 +60,7 @@ sub show_open {
         if (open my $fh, '<', $filename) {
             local $/ = undef;
             my $content = <$fh>;
-            #$text->insert("0.0", $content);
+            $self->{text}->insert("0.0", $content);
         } else {
             print "TODO: Report error $! for '$filename'\n";
         }
