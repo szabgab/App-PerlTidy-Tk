@@ -1,0 +1,6 @@
+*.swp
+*.gz
+MANIFEST
+MYMETA.json
+MYMETA.yml
+Makefile
