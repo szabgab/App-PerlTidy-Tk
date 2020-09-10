@@ -1,5 +1,6 @@
 *.swp
 *.gz
+App-PerlTidy-Tk*
 MANIFEST
 MYMETA.json
 MYMETA.yml
