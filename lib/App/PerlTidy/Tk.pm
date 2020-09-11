@@ -4,6 +4,7 @@ use warnings;
 use 5.008;
 
 use Cwd qw(getcwd);
+use Data::Dumper qw(Dumper);
 use Perl::Tidy;
 use Tk;
 use Tk::Dialog;
@@ -12,10 +13,13 @@ use Tk::FileSelect;
 our $VERSION = '0.01';
 
 my %config = (
+    '--entab-leading-whitespace' => undef,
     '--indent-columns' => 4,
     '--maximum-line-length' => 80,
     '--variable-maximum-line-length' => undef,
     '--whitespace-cycle' => 0,
+    '--preserve-line-endings' => undef,
+    '--line-up-parentheses' => undef,
 );
 
 
@@ -26,6 +30,10 @@ sub run {
     $self->{top} = MainWindow->new;
     $self->create_menu;
     $self->create_text_widget;
+
+    my ($option_string, $defaults, $expansion, $category, $option_range) = Perl::Tidy::generate_options();
+    #print Dumper $option_string;
+    #print Dumper $defaults;
 
     MainLoop;
 }
