@@ -12,15 +12,15 @@ use Tk::FileSelect;
 
 our $VERSION = '0.01';
 
-my %config = (
-    '--entab-leading-whitespace' => undef,
-    '--indent-columns' => 4,
-    '--maximum-line-length' => 80,
-    '--variable-maximum-line-length' => undef,
-    '--whitespace-cycle' => 0,
-    '--preserve-line-endings' => undef,
-    '--line-up-parentheses' => undef,
-);
+#my %config = (
+#    '--entab-leading-whitespace' => undef,
+#    '--indent-columns' => 4,
+#    '--maximum-line-length' => 80,
+#    '--variable-maximum-line-length' => undef,
+#    '--whitespace-cycle' => 0,
+#    '--preserve-line-endings' => undef,
+#    '--line-up-parentheses' => undef,
+#);
 
 
 sub run {
@@ -32,6 +32,7 @@ sub run {
     $self->create_text_widget;
 
     my ($option_string, $defaults, $expansion, $category, $option_range) = Perl::Tidy::generate_options();
+    $self->{defaults} = $defaults;
     #print Dumper $option_string;
     #print Dumper $defaults;
 
@@ -87,15 +88,23 @@ sub show_open {
 
 sub run_tidy {
     my ($self) = @_;
+    my %skip = map { $_ => 1 } qw(nocheck-syntax perl-syntax-check-flags);
+    print Dumper \%skip;
 
     my $rc = '';
-    for my $field (sort keys %config) {
-        if (defined $config{$field}) {
-            $rc .= "$field=$config{$field}\n";
-        } else {
-            $rc .= "$field\n";
-        }
+    for my $entry (@{$self->{defaults}}) {
+        my ($name, $value) = split /=/, $entry;
+        next if $skip{$name};
+        $rc .= "--$entry\n";
     }
+    print $rc;
+    #for my $field (sort keys %config) {
+    #    if (defined $config{$field}) {
+    #        $rc .= "$field=$config{$field}\n";
+    #    } else {
+    #        $rc .= "$field\n";
+    #    }
+    #}
 
     my $code = $self->{text}->get("0.0", 'end');
     my $clean;
