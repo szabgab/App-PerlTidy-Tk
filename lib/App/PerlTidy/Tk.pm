@@ -5,7 +5,9 @@ use 5.008;
 
 use Cwd qw(getcwd);
 use Data::Dumper qw(Dumper);
+use Getopt::Long qw(GetOptions);
 use Perl::Tidy;
+
 use Tk;
 use Tk::Dialog;
 use Tk::FileSelect;
@@ -27,9 +29,16 @@ sub run {
     my ($class) = @_;
     my $self = bless {}, $class;
 
+    my $perlfile;
+    GetOptions('perl=s' => \$perlfile) or die "Usage: $0 --perl somefile.pl\n";
+
     $self->{top} = MainWindow->new;
     $self->create_menu;
     $self->create_text_widget;
+
+    if ($perlfile) {
+        $self->load_perl_file($perlfile);
+    }
 
     my ($option_string, $defaults, $expansion, $category, $option_range) = Perl::Tidy::generate_options();
     $self->{defaults} = $defaults;
@@ -73,6 +82,12 @@ sub show_open {
     my $start_dir = getcwd();
     my $file_selector = $self->{top}->FileSelect(-directory => $start_dir);
     my $filename = $file_selector->Show;
+    $self->load_perl_file($filename);
+}
+
+sub load_perl_file {
+    my ($self, $filename) = @_;
+
     if ($filename and -f $filename) {
         if (open my $fh, '<', $filename) {
             local $/ = undef;
