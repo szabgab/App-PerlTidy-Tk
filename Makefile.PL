@@ -16,5 +16,17 @@ WriteMakefile(
         'Perl::Tidy' => 0
     },
     EXE_FILES => ['bin/perltidy-tk'],
+    META_MERGE    => {
+        'meta-spec' => { version => 2 },
+         resources => {
+             repository => {
+                 type => 'git',
+                 url  => 'https://github.com/szabgab/App-PerlTidy-Tk.git',
+                 web  => 'https://github.com/szabgab/App-PerlTidy-Tk.com',
+             },
+             bugtracker => {web => 'https://github.com/szabgab/App-PerlTidy-Tk/issues'},
+             homepage   => 'https://perlmaven.com/tk',
+         },
+    },
     dist  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
 );
