@@ -11,6 +11,14 @@ use Tk::FileSelect;
 
 our $VERSION = '0.01';
 
+my %config = (
+    '--indent-columns' => 4,
+    '--maximum-line-length' => 80,
+    '--variable-maximum-line-length' => undef,
+    '--whitespace-cycle' => 0,
+);
+
+
 sub run {
     my ($class) = @_;
     my $self = bless {}, $class;
@@ -33,7 +41,7 @@ sub create_menu {
     $file_menu->command(-label => 'Quit', -command => sub { $self->exit_app(); });
 
     my $action_menu = $main_menu->cascade(-label => 'Action');
-    $action_menu->command(-label => 'Tidy', -command => \&run_tidy);
+    $action_menu->command(-label => 'Tidy', -command => sub { $self->run_tidy; });
 
     my $about_menu = $main_menu->cascade(-label => 'Help', -underline => 0);
     $about_menu->command(-label => 'About', -command => sub { $self->show_about; });
@@ -60,6 +68,7 @@ sub show_open {
         if (open my $fh, '<', $filename) {
             local $/ = undef;
             my $content = <$fh>;
+            $self->{text}->delete("0.0", 'end');
             $self->{text}->insert("0.0", $content);
         } else {
             print "TODO: Report error $! for '$filename'\n";
@@ -71,7 +80,27 @@ sub show_open {
 sub run_tidy {
     my ($self) = @_;
 
-    print("run\n");
+    my $rc = '';
+    for my $field (sort keys %config) {
+        if (defined $config{$field}) {
+            $rc .= "$field=$config{$field}\n";
+        } else {
+            $rc .= "$field\n";
+        }
+    }
+
+    my $code = $self->{text}->get("0.0", 'end');
+    my $clean;
+    my $stderr;
+
+    my $error = Perl::Tidy::perltidy(
+        source      => \$code,
+        destination => \$clean,
+        stderr      => \$stderr,
+        perltidyrc  => \$rc,
+    );
+    $self->{text}->delete("0.0", 'end');
+    $self->{text}->insert("0.0", $clean);
 }
 
 sub show_about {
