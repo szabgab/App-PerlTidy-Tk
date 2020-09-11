@@ -55,7 +55,7 @@ sub create_text_widget {
     $self->{text} = $self->{top}->Text(
         -state => 'normal'
     );
-    $self->{text}->pack;
+    $self->{text}->pack(-fill => 'both', -expand => 1);
 }
 
 sub show_open {
