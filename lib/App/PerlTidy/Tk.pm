@@ -36,15 +36,15 @@ sub create_menu {
 
     my $main_menu = $self->{top}->Menu();
 
-    my $file_menu = $main_menu->cascade(-label => 'File');
-    $file_menu->command(-label => 'Open', -command => sub { $self->show_open(); });
-    $file_menu->command(-label => 'Quit', -command => sub { $self->exit_app(); });
+    my $file_menu = $main_menu->cascade(-label => 'File', -underline => 0);
+    $file_menu->command(-label => 'Open', -command => sub { $self->show_open(); }, -underline => 0);
+    $file_menu->command(-label => 'Quit', -command => sub { $self->exit_app(); }, -underline => 0);
 
-    my $action_menu = $main_menu->cascade(-label => 'Action');
+    my $action_menu = $main_menu->cascade(-label => 'Action', -underline => 0);
     $action_menu->command(-label => 'Tidy', -command => sub { $self->run_tidy; });
 
     my $about_menu = $main_menu->cascade(-label => 'Help', -underline => 0);
-    $about_menu->command(-label => 'About', -command => sub { $self->show_about; });
+    $about_menu->command(-label => 'About', -command => sub { $self->show_about; }, -underline => 0);
 
     $self->{top}->configure(-menu => $main_menu);
 }
