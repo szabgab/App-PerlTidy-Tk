@@ -27,6 +27,8 @@ our $VERSION = '0.01';
 #);
 
 
+my $zoom = 3;
+
 sub run {
     my ($class) = @_;
     my $self = bless {}, $class;
@@ -35,6 +37,9 @@ sub run {
     GetOptions('perl=s' => \$perlfile) or die "Usage: $0 --perl somefile.pl\n";
 
     $self->{top} = MainWindow->new;
+
+    $self->{top}->bind("<Control-Shift-plus>", sub { $self->zoom($zoom) });
+    $self->{top}->bind("<Control-minus>", sub { $self->zoom(-$zoom) });
     $self->create_menu;
     $self->create_text_widget;
 
@@ -62,6 +67,8 @@ sub create_menu {
 
     my $action_menu = $main_menu->cascade(-label => 'Action', -underline => 0);
     $action_menu->command(-label => 'Tidy', -command => sub { $self->run_tidy; });
+    $action_menu->command(-label => 'Zoom in (Ctrl-Shift-+)', -command => sub { $self->zoom($zoom); });
+    $action_menu->command(-label => 'Zoom Out (Ctrl--)', -command => sub { $self->zoom(-$zoom); });
 
     my $about_menu = $main_menu->cascade(-label => 'Help', -underline => 0);
     $about_menu->command(-label => 'About', -command => sub { $self->show_about; }, -underline => 0);
@@ -69,11 +76,21 @@ sub create_menu {
     $self->{top}->configure(-menu => $main_menu);
 }
 
+sub zoom {
+    my ($self, $number) = @_;
+    my $font_info = $self->{text}->configure('-font');
+    #print "${$font_info->[4]}\n";  # 'fixed 20';
+    my ($font, $size) = split / /, ${$font_info->[4]};
+    $size += $number;
+    $self->{text}->configure(-font => ['fixed', $size]);
+}
+
 sub create_text_widget {
     my ($self) = @_;
 
     $self->{text} = $self->{top}->Text(
-        -state => 'normal'
+        -state => 'normal',
+        -font => ['fixed', 12],
     );
     $self->{text}->pack(-fill => 'both', -expand => 1);
 }
