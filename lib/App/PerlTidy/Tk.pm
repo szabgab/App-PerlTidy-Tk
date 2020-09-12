@@ -11,6 +11,8 @@ use Perl::Tidy;
 use Tk;
 use Tk::Dialog;
 use Tk::FileSelect;
+use Tk::HyperText;
+use Browser::Open qw(open_browser open_browser_cmd);
 
 our $VERSION = '0.01';
 
@@ -137,23 +139,48 @@ sub run_tidy {
 
 sub show_about {
     my ($self) = @_;
-    my $text = <<"TEXT";
-Version: $VERSION
-Tk: $Tk::VERSION
-Perl::Tidy: $Perl::Tidy::VERSION
-Perl $]
 
-Create by Gabor Szabo
-Thanks to my Patreon supporters
-TEXT
-
-    my $dialog = $self->{top}->Dialog(
+    my $dialog = $self->{top}->DialogBox(
         -title   => 'About App::PerlTidy::Tk',
         -popover => $self->{top},
-        -text    => $text,
-        -justify => 'left',
+        -buttons => ['OK'],
     );
+
+    my $html = $dialog->HyperText();
+    $html->pack;
+    $html->setHandler (Resource => \&onResource);
+    $html->loadString(qq{<html>
+      <head>
+      <title>About App::PerlTidy::Tk</title>
+      </head>
+      <body>
+         Version: $VERSION<br>
+         Tk: $Tk::VERSION<br>
+         Perl::Tidy: $Perl::Tidy::VERSION<br>
+         Perl $]<br>
+         <p>
+         Create by Gabor Szabo<br>
+         Thanks to my <a href="https://www.patreon.com/szabgab">Patreon</a> supporters<br>
+      </body>
+      </html>
+    });
+
     $dialog->Show;
+}
+
+sub onResource {
+    my ($html, %info) = @_;
+    my $url = $info{href};
+    #print $url, "\n";
+    #open_browser($url); # https://rt.cpan.org/Public/Bug/Display.html?id=133315
+    #print "done\n";
+    my $cmd = open_browser_cmd($url);
+    # TODO: verify that the URL is well formatted before passing it to system
+    if ($^O eq 'MSWin32') {
+        system("$cmd $url");
+    } else {
+        system("$cmd $url &");
+    }
 }
 
 sub exit_app {
