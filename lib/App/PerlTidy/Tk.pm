@@ -162,6 +162,42 @@ sub show_about {
          Create by Gabor Szabo<br>
          Source code on <a href="https://github.com/szabgab/App-PerlTidy-Tk">GitHub</a><br>
          Thanks to my <a href="https://www.patreon.com/szabgab">Patreon</a> supporters<br>
+
+<h2>Supporters</h2>
+<ul>
+<li><a href="https://www.activestate.com/">ActiveState</a></li>
+<li><a href="https://www.chatterjee.net/">Anirvan Chatterjee</a></li>
+<li>Brian Gaboury</li>
+<li><a href="https://www.linkedin.com/in/chan-wilson-b867b3/">Chan Wilson</a></li>
+<li><a href="https://www.linkedin.com/in/fins0ck/">Csaba Gaspar</a></li>
+<li><a href="https://www.linkedin.com/in/dihnen/">David Ihnen</a></li>
+<li><a href="https://www.preshweb.co.uk/about/">David Precious</a></li>
+<li>Frank Kropp</li>
+<li>John Andersen</li>
+<li>Magnus Enger</li>
+<li><a href="https://www.linkedin.com/in/mjgardner/">Mark Gardner</a></li>
+<li>Markus Hechenberger</li>
+<li>Matthew Mitchell</li>
+<li>Matthew Persico</li>
+<li>Meir Guttman</li>
+<li>Mike Small</li>
+<li><a href="https://www.linkedin.com/in/n8dgr8/">Nathan Schlehlein</a></li>
+<li><a href="https://www.linkedin.com/in/pfmabry/">Paul Mabry</a></li>
+<li>Richard Leach</li>
+<li>Robert Coursen</li>
+<li><a href="https://www.linkedin.com/in/shajiindia/">Shaji Kalidasan</a></li>
+<li><a href="https://www.linkedin.com/in/shanta-mcbain-7b644437/">Shanta McBain</a></li>
+<li><a href="https://www.linkedin.com/in/slobodanmiskovic/">Slobodan Mišković</a></li>
+<li><a href="https://www.linkedin.com/in/stephen-jarjoura-a684401/">Stephen A. Jarjoura</a></li>
+<li>Tony Edwardson</li>
+<li><a href="https://www.linkedin.com/in/tori-hunter-00009639/">Tori Hunter</a></li>
+<li><a href="https://bruck.co.il/">Uri Bruck</a></li>
+<li>Victor Moral</li>
+<li>Wolfgang Odendahl</li>
+<li>Yes2Crypto</li>
+<li>... + many others</li>
+</ul>
+
       </body>
       </html>
     });
