@@ -155,11 +155,12 @@ sub show_about {
       </head>
       <body>
          Version: $VERSION<br>
-         Tk: $Tk::VERSION<br>
-         Perl::Tidy: $Perl::Tidy::VERSION<br>
+         &nbsp;<a href="https://metacpan.org/pod/Tk">Perl Tk</a>: $Tk::VERSION<br>
+         <a href="https://metacpan.org/pod/Perl::Tidy">Perl::Tidy</a>: $Perl::Tidy::VERSION<br>
          Perl $]<br>
          <p>
          Create by Gabor Szabo<br>
+         Source code on <a href="https://github.com/szabgab/App-PerlTidy-Tk">GitHub</a><br>
          Thanks to my <a href="https://www.patreon.com/szabgab">Patreon</a> supporters<br>
       </body>
       </html>
