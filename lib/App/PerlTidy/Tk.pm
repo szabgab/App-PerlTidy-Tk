@@ -16,18 +16,8 @@ use Browser::Open qw(open_browser open_browser_cmd);
 
 our $VERSION = '0.01';
 
-#my %config = (
-#    '--entab-leading-whitespace' => undef,
-#    '--indent-columns' => 4,
-#    '--maximum-line-length' => 80,
-#    '--variable-maximum-line-length' => undef,
-#    '--whitespace-cycle' => 0,
-#    '--preserve-line-endings' => undef,
-#    '--line-up-parentheses' => undef,
-#);
-
-
 my $zoom = 3;
+my %skip = map { $_ => 1 } qw(nocheck-syntax perl-syntax-check-flags);
 
 sub run {
     my ($class) = @_;
@@ -36,23 +26,43 @@ sub run {
     my $perlfile;
     GetOptions('perl=s' => \$perlfile) or die "Usage: $0 --perl somefile.pl\n";
 
+    $self->load_default_configuration;
+
     $self->{top} = MainWindow->new;
 
     $self->{top}->bind("<Control-Shift-plus>", sub { $self->zoom($zoom) });
     $self->{top}->bind("<Control-minus>", sub { $self->zoom(-$zoom) });
     $self->create_menu;
     $self->create_text_widget;
+    $self->create_config_panel;
 
     if ($perlfile) {
         $self->load_perl_file($perlfile);
     }
 
-    my ($option_string, $defaults, $expansion, $category, $option_range) = Perl::Tidy::generate_options();
-    $self->{defaults} = $defaults;
-    #print Dumper $option_string;
-    #print Dumper $defaults;
-
     MainLoop;
+}
+
+sub load_default_configuration {
+    my ($self) = @_;
+
+    my ($option_string, $defaults, $expansion, $category, $option_range) = Perl::Tidy::generate_options();
+    #$self->{defaults} = $defaults;
+    $self->{config} = {}; # options that have a value
+    $self->{flags} = {}; # options that only have presence
+    $self->{widgets} = {};
+    #print Dumper $option_string;
+    for my $def (sort @$defaults) {
+        my ($name, $value) = split /=/, $def;
+        #print "$name\n";
+        next if $skip{$name};
+        if (defined $value) {
+            #print "   $value\n";
+            $self->{config}{$name} = $value;
+        } else {
+            $self->{flags}{$name} = 1;
+        }
+    }
 }
 
 
@@ -83,6 +93,38 @@ sub zoom {
     my ($font, $size) = split / /, ${$font_info->[4]};
     $size += $number;
     $self->{text}->configure(-font => ['fixed', $size]);
+}
+
+sub create_config_panel {
+    my ($self) = @_;
+
+    #my $name = 'line-up-parentheses';
+    #print $self->{flags}{$name}, "\n";
+    #my $cb = $self->{top}->Checkbutton(
+    #    -text     => $name,
+    #    -variable => \$self->{flags}{$name},
+    #    -font     => ['fixed', 10]
+    #);
+    #$cb->pack(-side => 'left');
+
+    my $name = 'indent-columns';
+    #print $self->{config}{$name}, "\n";
+    $self->{top}->Label(
+        -text     => $name,
+    )->pack;
+    my $cb = $self->{top}->Entry(
+        -font     => ['fixed', 10]
+    );
+    $cb->insert(0, $self->{config}{$name});
+    $cb->pack(-side => 'left');
+    $self->{widgets}{$name} = $cb;
+
+}
+
+sub update_config {
+    my ($self) = @_;
+    my $name = 'indent-columns';
+    $self->{config}{$name} = $self->{widgets}{$name}->get;
 }
 
 sub create_text_widget {
@@ -122,16 +164,17 @@ sub load_perl_file {
 
 sub run_tidy {
     my ($self) = @_;
-    my %skip = map { $_ => 1 } qw(nocheck-syntax perl-syntax-check-flags);
-    print Dumper \%skip;
+    #print Dumper \%skip;
+    $self->update_config;
 
     my $rc = '';
-    for my $entry (@{$self->{defaults}}) {
-        my ($name, $value) = split /=/, $entry;
-        next if $skip{$name};
-        $rc .= "--$entry\n";
+    while (my ($name, $value) = each %{$self->{config}}) {
+        $rc .= "--$name=$value\n";
     }
-    print $rc;
+    for my $name (keys %{$self->{flags}}) {
+        $rc .= "--$name\n";
+    }
+    #print $rc;
     #for my $field (sort keys %config) {
     #    if (defined $config{$field}) {
     #        $rc .= "$field=$config{$field}\n";
