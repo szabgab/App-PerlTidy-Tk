@@ -14,6 +14,9 @@ WriteMakefile(
     PREREQ_PM => {
         'Tk'         => 0,
         'Perl::Tidy' => 0
+
+        'Test::More' => 0,
+        'Test::CPAN::Changes' => 0,
     },
     EXE_FILES => ['bin/perltidy-tk'],
     META_MERGE    => {

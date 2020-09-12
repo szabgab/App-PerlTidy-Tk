@@ -1,14 +1,14 @@
 
-0.02
-    Set default character size to 12.
-    Allow to zoom in and zoom out using the menu and using keyboard shortcuts.
+0.02 2020.09.13
+    - Set default character size to 12.
+    - Allow to zoom in and zoom out using the menu and using keyboard shortcuts.
 
 0.01 2020.09.12
-    Initial release
+    - Initial release
 
-    Load and display Perl file
-    Run Perl Tidy with default options.
-    Replace the displayed Perl file with the tidyed version.
-    Command line option to load a Perl file.
-    HTML-based About box
-    Menu items.
+    - Load and display Perl file
+    - Run Perl Tidy with default options.
+    - Replace the displayed Perl file with the tidyed version.
+    - Command line option to load a Perl file.
+    - HTML-based About box
+    - Menu items.
