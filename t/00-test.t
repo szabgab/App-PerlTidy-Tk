@@ -4,7 +4,9 @@ use Test::More;
 
 use App::PerlTidy::Tk;
 
-App::PerlTidy::Tk->new;
+if (not $ENV{TRAVIS}) {
+    App::PerlTidy::Tk->new;
+}
 
 pass;
 
