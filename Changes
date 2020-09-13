@@ -3,6 +3,7 @@
     - Set default character size to 12.
     - Allow to zoom in and zoom out using the menu and using keyboard shortcuts.
     - Add missing dependency: Tk::HyperText.
+    - Add new dependency: Browser::Open.
 
 0.01 2020.09.12
     - Initial release

@@ -15,6 +15,7 @@ WriteMakefile(
         'Tk'            => 0,
         'Tk::HyperText' => 0,
         'Perl::Tidy'    => 0,
+        'Browser::Open' => 0,
 
         'Test::More'          => 0,
         'Test::CPAN::Changes' => 0,
