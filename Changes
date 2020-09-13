@@ -4,6 +4,7 @@
     - Allow to zoom in and zoom out using the menu and using keyboard shortcuts.
     - Add missing dependency: Tk::HyperText.
     - Add new dependency: Browser::Open.
+    - Bind Ctlr-q to exit the application.
 
 0.01 2020.09.12
     - Initial release

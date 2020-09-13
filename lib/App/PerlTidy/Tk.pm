@@ -37,10 +37,11 @@ sub new {
 
     $self->load_default_configuration;
 
-    $self->{top} = MainWindow->new;
+    $self->{top} = MainWindow->new();
 
     $self->{top}->bind("<Control-Shift-plus>", sub { $self->zoom($zoom) });
     $self->{top}->bind("<Control-minus>", sub { $self->zoom(-$zoom) });
+    $self->{top}->bind("<Control-q>", sub { $self->exit_app(); });
     $self->create_menu;
     $self->create_text_widget;
     $self->create_config_panel;
@@ -87,7 +88,7 @@ sub create_menu {
 
     my $file_menu = $main_menu->cascade(-label => 'File', -underline => 0);
     $file_menu->command(-label => 'Open', -command => sub { $self->show_open(); }, -underline => 0);
-    $file_menu->command(-label => 'Quit', -command => sub { $self->exit_app(); }, -underline => 0);
+    $file_menu->command(-label => 'Quit (Ctrl-q)', -command => sub { $self->exit_app(); }, -underline => 0);
 
     my $action_menu = $main_menu->cascade(-label => 'Action', -underline => 0);
     $action_menu->command(-label => 'Tidy', -command => sub { $self->run_tidy; });
