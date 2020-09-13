@@ -5,6 +5,7 @@
     - Add missing dependency: Tk::HyperText.
     - Add new dependency: Browser::Open.
     - Bind Ctlr-q to exit the application.
+    - Add Autotidy menu option.
 
 0.01 2020.09.12
     - Initial release

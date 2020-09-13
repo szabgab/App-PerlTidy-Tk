@@ -48,6 +48,8 @@ sub new {
         $config = decode_json(path($config_file)->slurp_utf8);
     }
 
+    $self->{autotidy} = 0;
+
     $self->load_default_configuration;
 
     $self->{top} = MainWindow->new();
@@ -114,6 +116,7 @@ sub create_menu {
     $action_menu->command(-label => 'Tidy', -command => sub { $self->run_tidy; });
     $action_menu->command(-label => 'Zoom in (Ctrl-Shift-+)', -command => sub { $self->zoom($zoom); });
     $action_menu->command(-label => 'Zoom Out (Ctrl--)', -command => sub { $self->zoom(-$zoom); });
+    $action_menu->checkbutton(-label => 'Autotidy', -variable => \$self->{autotidy});
 
     my $about_menu = $main_menu->cascade(-label => 'Help', -underline => 0);
     $about_menu->command(-label => 'About', -command => sub { $self->show_about; }, -underline => 0);
@@ -157,11 +160,21 @@ sub create_config_panel {
         my $cb = $self->{table}->Optionmenu(
             -variable => \$self->{config}{$name},
             -options  => [$self->{range}{$name}[0] .. $self->{range}{$name}[1]],
+            -command => sub { $self->config_changed },
         );
         $self->{table}->put($row, 1, $cb);
         $self->{widgets}{$name} = $cb;
     }
 }
+
+sub config_changed {
+    my ($self) = @_;
+
+    if ($self->{autotidy}) {
+        $self->run_tidy;
+    }
+}
+
 
 sub update_config {
     my ($self) = @_;
