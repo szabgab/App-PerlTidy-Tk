@@ -12,10 +12,11 @@ WriteMakefile(
         : () ),
     PL_FILES  => {},
     PREREQ_PM => {
-        'Tk'         => 0,
-        'Perl::Tidy' => 0,
+        'Tk'            => 0,
+        'Tk::HyperText' => 0,
+        'Perl::Tidy'    => 0,
 
-        'Test::More' => 0,
+        'Test::More'          => 0,
         'Test::CPAN::Changes' => 0,
     },
     EXE_FILES => ['bin/perltidy-tk'],
