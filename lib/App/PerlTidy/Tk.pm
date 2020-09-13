@@ -19,12 +19,21 @@ our $VERSION = '0.01';
 my $zoom = 3;
 my %skip = map { $_ => 1 } qw(nocheck-syntax perl-syntax-check-flags);
 
+sub usage {
+    die "Usage: $0 [--help] [--perl somefile.pl]\n";
+}
+
 sub new {
     my ($class) = @_;
     my $self = bless {}, $class;
 
     my $perlfile;
-    GetOptions('perl=s' => \$perlfile) or die "Usage: $0 --perl somefile.pl\n";
+    my $help;
+    GetOptions(
+        'perl=s' => \$perlfile,
+        'help'   => \$help,
+    ) or usage();
+    usage() if $help;
 
     $self->load_default_configuration;
 
