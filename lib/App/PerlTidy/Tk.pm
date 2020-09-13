@@ -19,7 +19,7 @@ our $VERSION = '0.01';
 my $zoom = 3;
 my %skip = map { $_ => 1 } qw(nocheck-syntax perl-syntax-check-flags);
 
-sub run {
+sub new {
     my ($class) = @_;
     my $self = bless {}, $class;
 
@@ -40,6 +40,11 @@ sub run {
         $self->load_perl_file($perlfile);
     }
 
+    return $self;
+}
+
+sub run {
+    my ($self) = @_;
     MainLoop;
 }
 
