@@ -6,7 +6,7 @@ WriteMakefile(
     NAME         => 'App::PerlTidy::Tk',
     AUTHOR       => q{Gabor Szabo <szabgab@cpan.org>},
     VERSION_FROM => 'lib/App/PerlTidy/Tk.pm',
-    ABSTRACT     => 'Tk based GUI to experiment with PerlTidy configuration options',
+    ABSTRACT_FROM => 'lib/App/PerlTidy/Tk.pm',
     ( $ExtUtils::MakeMaker::VERSION >= 6.3002
         ? ( 'LICENSE' => 'perl' )
         : () ),

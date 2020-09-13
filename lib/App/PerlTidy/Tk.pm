@@ -293,3 +293,37 @@ sub exit_app {
 }
 
 1;
+
+=head1 NAME
+
+App::PerlTidy::Tk - Tk based GUI to experiment with PerlTidy configuration options
+
+=head1 SYNOPSIS
+
+    perltidy-tk
+    perltidy-tk --perl path/to/some.pl
+
+=head1 DESCRIPTION
+
+This is a GUI program. There are some videos on L<Perl Maven Tk|https://perlmaven.com/tk> explaining
+how does this work and how was this built.
+
+=head1 SEE ALSO
+
+L<Perl::Tidy>
+
+L<Tk>
+
+L<Tk::HyperText>
+
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright (C) 2020 by L<Gabor Szabo|https://szabgab.com/>
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself, either Perl version 5.26.1 or,
+at your option, any later version of Perl 5 you may have available.
+
+=cut
+
