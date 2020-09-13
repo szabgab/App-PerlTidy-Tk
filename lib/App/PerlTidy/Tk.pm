@@ -25,6 +25,7 @@ my $zoom = 3;
 my %skip = map { $_ => 1 } qw(nocheck-syntax perl-syntax-check-flags);
 my $home = File::HomeDir->my_home;
 my $config_file = File::Spec->catfile($home, '.perltidy-tk.json');
+my @options = ('indent-columns', 'paren-tightness', 'brace-tightness', 'block-brace-tightness');
 
 sub usage {
     die "Usage: $0 [--help] [--perl somefile.pl]\n";
@@ -78,6 +79,9 @@ sub load_default_configuration {
     my ($self) = @_;
 
     my ($option_string, $defaults, $expansion, $category, $option_range) = Perl::Tidy::generate_options();
+    #print Dumper $option_range;
+    $option_range->{'indent-columns'} ||= [1, 8];
+    $self->{range} = $option_range;
     #$self->{defaults} = $defaults;
     $self->{config} = {}; # options that have a value
     $self->{flags} = {}; # options that only have presence
@@ -132,7 +136,7 @@ sub create_config_panel {
     $self->{table}  = $self->{top}->Table(-columns => 2, -rows => 1, -fixedrows => 1, -scrollbars => '');
     $self->{table}->pack(-expand=> 1, -fill => 'both');
 
-    my $row = 0;
+    my $row = -1;
 
     #my $name = 'line-up-parentheses';
     #print $self->{flags}{$name}, "\n";
@@ -143,21 +147,20 @@ sub create_config_panel {
     #);
     #$cb->pack(-side => 'left');
 
-    my $name = 'indent-columns';
-    my $label = $self->{table}->Label(
-        -text     => $name,
-    );
-    $self->{table}->put($row, 0, $label);
+    for my $name (@options) {
+        $row++;
+        my $label = $self->{table}->Label(
+            -text     => $name,
+        );
+        $self->{table}->put($row, 0, $label);
 
-    my $cb = $self->{table}->Optionmenu(
-        -variable => \$self->{config}{$name},
-        -options  => [1..8],
-    );
-    $self->{table}->put($row, 1, $cb);
-    $self->{widgets}{$name} = $cb;
-
-
-
+        my $cb = $self->{table}->Optionmenu(
+            -variable => \$self->{config}{$name},
+            -options  => [$self->{range}{$name}[0] .. $self->{range}{$name}[1]],
+        );
+        $self->{table}->put($row, 1, $cb);
+        $self->{widgets}{$name} = $cb;
+    }
 }
 
 sub update_config {
