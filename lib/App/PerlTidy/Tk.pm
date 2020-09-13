@@ -138,23 +138,24 @@ sub create_config_panel {
     #$cb->pack(-side => 'left');
 
     my $name = 'indent-columns';
-    #print $self->{config}{$name}, "\n";
     $self->{top}->Label(
         -text     => $name,
     )->pack;
-    my $cb = $self->{top}->Entry(
-        -font     => ['fixed', 10]
+    my $cb = $self->{top}->Optionmenu(
+        -variable => \$self->{config}{$name},
+        -options  => [1..8],
     );
-    $cb->insert(0, $self->{config}{$name});
     $cb->pack(-side => 'left');
     $self->{widgets}{$name} = $cb;
+
+
 
 }
 
 sub update_config {
     my ($self) = @_;
-    my $name = 'indent-columns';
-    $self->{config}{$name} = $self->{widgets}{$name}->get;
+    #my $name = 'indent-columns';
+    #$self->{config}{$name} = $self->{widgets}{$name}->get;
 }
 
 sub create_text_widget {
