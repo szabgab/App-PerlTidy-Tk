@@ -12,10 +12,13 @@ WriteMakefile(
         : () ),
     PL_FILES  => {},
     PREREQ_PM => {
+        'Browser::Open' => 0,
+        'Cpanel::JSON::XS' => 0,
+        'File::HomeDir' => 0,
+        'Path::Tiny'    => 0,
+        'Perl::Tidy'    => 0,
         'Tk'            => 0,
         'Tk::HyperText' => 0,
-        'Perl::Tidy'    => 0,
-        'Browser::Open' => 0,
 
         'Test::More'          => 0,
         'Test::CPAN::Changes' => 0,

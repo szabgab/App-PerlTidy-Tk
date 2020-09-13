@@ -4,7 +4,11 @@ use warnings;
 use 5.008;
 
 use Cwd qw(getcwd);
+use Cpanel::JSON::XS qw(encode_json decode_json);
 use Data::Dumper qw(Dumper);
+use File::HomeDir ();
+use File::Spec ();
+use Path::Tiny qw(path);
 use Getopt::Long qw(GetOptions);
 use Perl::Tidy;
 
@@ -18,6 +22,8 @@ our $VERSION = '0.01';
 
 my $zoom = 3;
 my %skip = map { $_ => 1 } qw(nocheck-syntax perl-syntax-check-flags);
+my $home = File::HomeDir->my_home;
+my $config_file = File::Spec->catfile($home, '.perltidy-tk.json');
 
 sub usage {
     die "Usage: $0 [--help] [--perl somefile.pl]\n";
@@ -35,13 +41,22 @@ sub new {
     ) or usage();
     usage() if $help;
 
+    my $config = {};
+    if (-e $config_file) {
+        $config = decode_json(path($config_file)->slurp_utf8);
+    }
+
     $self->load_default_configuration;
 
     $self->{top} = MainWindow->new();
+    if (exists $config->{geometry}) {
+        $self->{top}->geometry($config->{geometry});
+    }
 
     $self->{top}->bind("<Control-Shift-plus>", sub { $self->zoom($zoom) });
     $self->{top}->bind("<Control-minus>", sub { $self->zoom(-$zoom) });
     $self->{top}->bind("<Control-q>", sub { $self->exit_app(); });
+
     $self->create_menu;
     $self->create_text_widget;
     $self->create_config_panel;
@@ -298,6 +313,12 @@ sub onResource {
 sub exit_app {
     my ($self) = @_;
 
+    # Save current window size so we can start the same size next time.
+    my %config = (
+        'geometry' => $self->{top}->geometry,
+    );
+    path($config_file)->spew(encode_json(\%config));
+
     print("TODO: save changes before exit? Same when user click on x\n");
     exit;
 }
@@ -317,6 +338,10 @@ App::PerlTidy::Tk - Tk based GUI to experiment with PerlTidy configuration optio
 
 This is a GUI program. There are some videos on L<Perl Maven Tk|https://perlmaven.com/tk> explaining
 how does this work and how was this built.
+
+When the application exits we save the current window size in the config file and next time we use that size to open the application.
+
+    ~/.perltidy-tk.json
 
 =head1 SEE ALSO
 
