@@ -3,6 +3,7 @@ use strict;
 use warnings;
 use 5.008;
 
+use Browser::Open qw(open_browser open_browser_cmd);
 use Cwd qw(getcwd);
 use Cpanel::JSON::XS qw(encode_json decode_json);
 use Data::Dumper qw(Dumper);
@@ -16,7 +17,7 @@ use Tk;
 use Tk::Dialog;
 use Tk::FileSelect;
 use Tk::HyperText;
-use Browser::Open qw(open_browser open_browser_cmd);
+use Tk::Table;
 
 our $VERSION = '0.01';
 
@@ -128,6 +129,11 @@ sub zoom {
 sub create_config_panel {
     my ($self) = @_;
 
+    $self->{table}  = $self->{top}->Table(-columns => 2, -rows => 1, -fixedrows => 1, -scrollbars => '');
+    $self->{table}->pack(-expand=> 1, -fill => 'both');
+
+    my $row = 0;
+
     #my $name = 'line-up-parentheses';
     #print $self->{flags}{$name}, "\n";
     #my $cb = $self->{top}->Checkbutton(
@@ -138,14 +144,16 @@ sub create_config_panel {
     #$cb->pack(-side => 'left');
 
     my $name = 'indent-columns';
-    $self->{top}->Label(
+    my $label = $self->{table}->Label(
         -text     => $name,
-    )->pack;
-    my $cb = $self->{top}->Optionmenu(
+    );
+    $self->{table}->put($row, 0, $label);
+
+    my $cb = $self->{table}->Optionmenu(
         -variable => \$self->{config}{$name},
         -options  => [1..8],
     );
-    $cb->pack(-side => 'left');
+    $self->{table}->put($row, 1, $cb);
     $self->{widgets}{$name} = $cb;
 
 
