@@ -1,5 +1,5 @@
 
-0.02 2020.09.13
+0.02 2020.09.14
     - Set default character size to 12.
     - Allow to zoom in and zoom out using the menu and using keyboard shortcuts.
     - Add missing dependency: Tk::HyperText.
@@ -7,6 +7,7 @@
     - Bind Ctlr-q to exit the application.
     - Add several new range options.
     - Add Autotidy menu option.
+    - Add option to save the PerlTidy config file.
 
 0.01 2020.09.12
     - Initial release
