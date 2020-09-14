@@ -109,7 +109,9 @@ sub create_menu {
     my $main_menu = $self->{top}->Menu();
 
     my $file_menu = $main_menu->cascade(-label => 'File', -underline => 0);
-    $file_menu->command(-label => 'Open', -command => sub { $self->show_open(); }, -underline => 0);
+    $file_menu->command(-label => 'Open Perl File', -command => sub { $self->show_open(); }, -underline => 0);
+    #$file_menu->command(-label => 'Load Config', -command => sub { $self->load_config(); }, -underline => 0);
+    $file_menu->command(-label => 'Save Config', -command => sub { $self->save_config(); }, -underline => 0);
     $file_menu->command(-label => 'Quit (Ctrl-q)', -command => sub { $self->exit_app(); }, -underline => 0);
 
     my $action_menu = $main_menu->cascade(-label => 'Action', -underline => 0);
@@ -122,6 +124,41 @@ sub create_menu {
     $about_menu->command(-label => 'About', -command => sub { $self->show_about; }, -underline => 0);
 
     $self->{top}->configure(-menu => $main_menu);
+}
+
+sub save_config {
+    my ($self) = @_;
+
+    my $start_dir = getcwd();
+    my $file_selector = $self->{top}->FileSelect(-directory => $start_dir);
+    my $filename = $file_selector->Show;
+    if (-e $filename) {
+        my $dialog = $self->{top}->Dialog(
+            -title   => 'Overwrite?',
+            -text    => "The file $filename already exists. Overwrite?",
+            -popover => $self->{top},
+            -buttons => ['Yes', 'No'],
+        );
+        my $res = $dialog->Show;
+        return if $res ne 'Yes';
+    }
+    my $rc = $self->get_rc();
+    if (open my $fh, '>', $filename) {
+        my $localtime = scalar localtime;
+        print $fh "# Saved by App::PerlTidy::Tk on $localtime\n\n";
+        print $fh $rc;
+    } else {
+        my $dialog = $self->{top}->Dialog(
+            -title   => 'Error',
+            -text    => "Could not write to file. $!",
+            -popover => $self->{top},
+            -buttons => ['OK'],
+        );
+    }
+}
+
+sub load_config {
+    my ($self) = @_;
 }
 
 sub zoom {
@@ -216,10 +253,9 @@ sub load_perl_file {
     }
 }
 
-
-sub run_tidy {
+sub get_rc {
     my ($self) = @_;
-    #print Dumper \%skip;
+
     $self->update_config;
 
     my $rc = '';
@@ -230,6 +266,15 @@ sub run_tidy {
         $rc .= "--$name\n";
     }
     #print $rc;
+    return $rc;
+}
+
+sub run_tidy {
+    my ($self) = @_;
+    #print Dumper \%skip;
+    #
+    my $rc = $self->get_rc();
+
     #for my $field (sort keys %config) {
     #    if (defined $config{$field}) {
     #        $rc .= "$field=$config{$field}\n";
