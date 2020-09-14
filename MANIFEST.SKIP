@@ -8,3 +8,5 @@ Makefile$
 .gitignore
 ^App-PerlTidy-Tk.*
 ^eg/.*
+.travis.yml
+README.md

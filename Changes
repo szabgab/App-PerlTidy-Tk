@@ -8,6 +8,7 @@
     - Add several new range options.
     - Add Autotidy menu option.
     - Add option to save the PerlTidy config file.
+    - Add CONTRIBUTING.md, primarily to make MetaCPAN happy.
 
 0.01 2020.09.12
     - Initial release
