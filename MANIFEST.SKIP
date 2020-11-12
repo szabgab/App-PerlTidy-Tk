@@ -10,3 +10,5 @@ Makefile$
 ^eg/.*
 .travis.yml
 README.md
+.vscode/
+MYMETA.*
