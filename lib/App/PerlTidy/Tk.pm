@@ -19,7 +19,7 @@ use Tk::FileSelect;
 use Tk::HyperText;
 use Tk::Table;
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 my $zoom = 3;
 my %skip = map { $_ => 1 } qw(nocheck-syntax perl-syntax-check-flags);

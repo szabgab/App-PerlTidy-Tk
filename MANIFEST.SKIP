@@ -1,5 +1,6 @@
 .*\.gz
 \.git/
+\.github/
 blib/
 MANIFEST.bak
 MANIFEST.SKIP
