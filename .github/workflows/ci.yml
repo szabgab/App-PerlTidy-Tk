@@ -5,8 +5,8 @@ on:
         branches: '*'
     pull_request:
         branches: '*'
-    schedule:
-        - cron: '42 5 * * 0'
+#    schedule:
+#        - cron: '42 5 * * 0'
 
 jobs:
   perl-job:
